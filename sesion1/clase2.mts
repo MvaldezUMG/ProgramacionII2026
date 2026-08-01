@@ -27,3 +27,33 @@ AsincronoConAwait();
 //console.log('Finalizado')
 
 
+function usandoPromise(edad:number): Promise<number>{
+    let promise: Promise<number> = new Promise((resolve, reject)=>{
+        if (edad >= 18){
+            resolve(edad)
+        }
+        else{
+            reject("No cumplete la condicion")
+        }
+    });
+    return promise
+}
+
+async function probandoPromise(): Promise<void>{
+    try{
+        let resultado = await usandoPromise(18);
+        console.log(resultado);
+    }catch(err){
+        console.error(err)
+    }
+    
+}
+probandoPromise()
+
+async function recuperarDatos(): Promise<any>{
+    let fetchResult = await fetch("https://jsonplaceholder.typicode.com/posts/1")
+    let jsonResult = await fetchResult.json();
+    return jsonResult
+}
+
+console.log("Datos recuperados", await recuperarDatos())
