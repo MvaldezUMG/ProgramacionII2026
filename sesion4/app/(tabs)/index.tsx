@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet, Button, Alert } from 'react-native';
+import {useState} from 'react';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -9,12 +10,17 @@ import { Link } from 'expo-router';
 
 export default function HomeScreen() {
   
+  const [contador, setContador] = useState(0);
+
   function buttonClick(e: any){
     if (Platform.OS === "web"){
       window.alert("Hola")
     }else{
       Alert.alert('Hola');
     }
+  }
+  function incrementar(e: any){
+    setContador(anterior => anterior + 1)
   }
   
   return (
@@ -27,6 +33,9 @@ export default function HomeScreen() {
         />
       }>
      <Button title='Haz click aca' onPress={buttonClick} ></Button>
+     <Button title='Aumentar' onPress={incrementar} ></Button>
+     <ThemedText>Conteo actual: {contador}</ThemedText>
+    
     </ParallaxScrollView>
   );
 }
