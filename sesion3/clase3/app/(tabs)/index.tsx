@@ -3,10 +3,11 @@ import {
   Alert,
   Button,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput
+  TextInput,
 } from 'react-native';
 
 
@@ -34,8 +35,9 @@ export default function HomeScreen() {
    <ScrollView>
     <Saludo nombre={nombre} apellido=''/>
 
+    <Pressable>
       <Text>Hola {nombre}</Text>
-
+    </Pressable>
       <TextInput style={{backgroundColor:"white", width:"50%"}} placeholder="Ingrese su nombre"
                  value={nombre}
                  onChangeText={(text: string)=> setNombre(text) }

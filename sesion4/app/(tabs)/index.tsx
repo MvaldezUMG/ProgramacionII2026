@@ -1,12 +1,11 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet, Button, Alert } from 'react-native';
-import {useState} from 'react';
+import { useState } from 'react';
+import { Alert, Button, Platform, StyleSheet, Text, View } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+
+import { Card } from '@/components/card';
 
 export default function HomeScreen() {
   
@@ -25,6 +24,7 @@ export default function HomeScreen() {
   
   return (
     <ParallaxScrollView
+      
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
         <Image
@@ -36,6 +36,25 @@ export default function HomeScreen() {
      <Button title='Aumentar' onPress={incrementar} ></Button>
      <ThemedText>Conteo actual: {contador}</ThemedText>
     
+      <View style={{
+        width: "80%",            // ancho
+        height: 250,           // alto
+        padding: 4,           // espacio INTERNO
+        margin: 4,             // espacio EXTERNO
+        backgroundColor: "red", // color de fondo para verla
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+      }}>
+        <Text style={{color:"white"}}>Soy una caja</Text>
+        <Text style={{color:"white"}}>Soy una caja2</Text>
+        <Text style={{color:"white"}}>Soy una caja3</Text>
+        <Text style={{color:"white"}}>Soy una caja4</Text>
+        <Text style={{color:"white"}}>Soy una caja5</Text>
+        <Text style={{color:"white"}} >Soy una caja6</Text>
+      </View>
+
+      <Card contenido="Hola"></Card>
     </ParallaxScrollView>
   );
 }
