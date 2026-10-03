@@ -1,5 +1,5 @@
 import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { Modal, Platform, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { HintRow } from '@/components/hint-row';
@@ -7,6 +7,16 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+
+import { useTheme } from '@/hooks/use-theme';
+import { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+import { SupabaseAuthRepository } from '../database/SupabaseRepository';
+import { supabase } from '../database/supabase';
+
+// El ÚNICO lugar donde se eligen las implementaciones
+export const authRepo = new SupabaseAuthRepository(supabase);
+
 
 function getDevMenuHint() {
   if (Platform.OS === 'web') {
@@ -28,16 +38,88 @@ function getDevMenuHint() {
 }
 
 export default function HomeScreen() {
+ const theme = useTheme();
+
+  const [loggeado, setLoggeado] = useState(false)
+  const [user, setUser] = useState({email:"", password: ""})
+
+
+  const iniciarSesion = async () => {
+    const response = await authRepo.iniciarSesion(user.email, user.password);
+    if (!response.id){
+      Alert.alert("El usuario no existe")
+    }
+  }
+  useEffect(()=>{
+    //Se va cargar al inicio del programa
+    (async()=>{
+      const sesion = await authRepo.obtenerSesion();
+      if (sesion){
+        setLoggeado(true)
+      }
+    })()
+  },[])
+
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
+
+        <Modal
+                visible={!loggeado}
+                transparent
+                animationType="slide">
+                <View style={styles.modalOverlay}>
+                  <ThemedView type="backgroundElement"  style={styles.modalCard}>
+                    <ThemedText type="subtitle">
+                      Iniciar sesion
+                    </ThemedText>
+        
+                    <ThemedView type="backgroundElement">
+                      <ThemedText type="smallBold">Email</ThemedText>
+                      <TextInput
+                       style={[styles.input, { backgroundColor: theme.background, color: theme.text }]}
+                        value={user.email}
+                        onChangeText={(text)=> {
+                          setUser((prev)=> ({...prev, email: text }))
+                        }}
+                        placeholder="Email"
+                      />
+                    </ThemedView>
+        
+                   <ThemedView type="backgroundElement">
+                      <ThemedText type="smallBold">Password</ThemedText>
+                      <TextInput
+                       style={[styles.input, { backgroundColor: theme.background, color: theme.text }]}
+                        value={user.password}
+                        onChangeText={(text)=> {
+                          setUser((prev)=> ({...prev, password: text }))
+                        }}
+                        placeholder="Password"
+                      />
+                    </ThemedView>
+        
+      
+
+                     <Pressable onPress={iniciarSesion}>
+                      <ThemedView type="backgroundSelected" style={styles.saveButton}>
+                        <ThemedText type="small" style={styles.saveButtonText}>
+                         Iniciar sesion
+                        </ThemedText>
+                      </ThemedView>
+                    </Pressable>
+        
+                  </ThemedView>
+                </View>
+              </Modal>
+
         <ThemedView style={styles.heroSection}>
         
         
         </ThemedView>
 
         <ThemedText type="code" style={styles.code}>
-          get started
+          Pantalla de iniciox 
         </ThemedText>
 
         <ThemedView type="backgroundElement" style={styles.stepContainer}>
@@ -91,5 +173,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.three,
     paddingVertical: Spacing.four,
     borderRadius: Spacing.four,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: Spacing.four,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalCard: {
+    alignSelf: 'stretch',
+    maxWidth: MaxContentWidth,
+    gap: Spacing.three,
+    padding: Spacing.four,
+    borderRadius: Spacing.four,
+  },
+    input: {
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderRadius: Spacing.two,
+    paddingVertical: Spacing.two,
+    paddingHorizontal: Spacing.three,
+    fontSize: 16,
+  },
+   saveButton: {
+    paddingVertical: Spacing.three,
+    paddingHorizontal: Spacing.four,
+    borderRadius: Spacing.three,
+    alignItems: 'center',
+  },
+  saveButtonText: {
+    fontWeight: '700',
   },
 });
