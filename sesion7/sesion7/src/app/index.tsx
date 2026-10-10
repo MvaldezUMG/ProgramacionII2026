@@ -41,15 +41,7 @@ export default function HomeScreen() {
  const theme = useTheme();
 
   const [loggeado, setLoggeado] = useState(false)
-  const [user, setUser] = useState({email:"", password: ""})
 
-
-  const iniciarSesion = async () => {
-    const response = await authRepo.iniciarSesion(user.email, user.password);
-    if (!response.id){
-      Alert.alert("El usuario no existe")
-    }
-  }
   useEffect(()=>{
     //Se va cargar al inicio del programa
     (async()=>{
@@ -65,54 +57,7 @@ export default function HomeScreen() {
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
 
-        <Modal
-                visible={!loggeado}
-                transparent
-                animationType="slide">
-                <View style={styles.modalOverlay}>
-                  <ThemedView type="backgroundElement"  style={styles.modalCard}>
-                    <ThemedText type="subtitle">
-                      Iniciar sesion
-                    </ThemedText>
-        
-                    <ThemedView type="backgroundElement">
-                      <ThemedText type="smallBold">Email</ThemedText>
-                      <TextInput
-                       style={[styles.input, { backgroundColor: theme.background, color: theme.text }]}
-                        value={user.email}
-                        onChangeText={(text)=> {
-                          setUser((prev)=> ({...prev, email: text }))
-                        }}
-                        placeholder="Email"
-                      />
-                    </ThemedView>
-        
-                   <ThemedView type="backgroundElement">
-                      <ThemedText type="smallBold">Password</ThemedText>
-                      <TextInput
-                       style={[styles.input, { backgroundColor: theme.background, color: theme.text }]}
-                        value={user.password}
-                        onChangeText={(text)=> {
-                          setUser((prev)=> ({...prev, password: text }))
-                        }}
-                        placeholder="Password"
-                      />
-                    </ThemedView>
-        
       
-
-                     <Pressable onPress={iniciarSesion}>
-                      <ThemedView type="backgroundSelected" style={styles.saveButton}>
-                        <ThemedText type="small" style={styles.saveButtonText}>
-                         Iniciar sesion
-                        </ThemedText>
-                      </ThemedView>
-                    </Pressable>
-        
-                  </ThemedView>
-                </View>
-              </Modal>
-
         <ThemedView style={styles.heroSection}>
         
         

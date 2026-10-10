@@ -6,7 +6,7 @@ import {
   TabTrigger,
   TabTriggerSlotProps,
 } from 'expo-router/ui';
-import { Pressable, StyleSheet, useColorScheme, View } from 'react-native';
+import { Button, Pressable, StyleSheet, useColorScheme, View } from 'react-native';
 
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
@@ -25,9 +25,7 @@ export default function AppTabs() {
           <TabTrigger name="home" href="/products" asChild>
             <TabButton>Products</TabButton>
           </TabTrigger>
-          <TabTrigger name="explore" href="/explore" asChild>
-            <TabButton>Explore</TabButton>
-          </TabTrigger>
+          <Button title="Cerrar"></Button>
         </CustomTabList>
       </TabList>
     </Tabs>

@@ -8,6 +8,8 @@ export default function AppTabs() {
   const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
 
   return (
+    <>
+    
     <NativeTabs
       backgroundColor={colors.background}
       indicatorColor={colors.backgroundElement}
@@ -21,7 +23,7 @@ export default function AppTabs() {
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="products">
-        <NativeTabs.Trigger.Label>Productos</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Label>Prod</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
           src={require('@/assets/images/tabIcons/explore.png')}
           renderingMode="template"
@@ -35,6 +37,12 @@ export default function AppTabs() {
           renderingMode="template"
         />
       </NativeTabs.Trigger>
+    <NativeTabs.Trigger name="settings">
+        <NativeTabs.Trigger.Icon sf="gear" md="settings" />
+        <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
     </NativeTabs>
+   
+    </>
   );
 }
