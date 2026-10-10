@@ -1,21 +1,30 @@
-import { ThemedText } from "@/components/themed-text"
-import { ThemedView } from "@/components/themed-view"
-import { TextInput, Pressable, View,StyleSheet, Alert } from "react-native"
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from "@/hooks/use-theme";
+import { useRouter } from "expo-router";
 import { useState } from "react";
+import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { authRepo } from ".";
 
-export const LoginScreen = ()=> {
+export default function LoginScreen() {
     const theme = useTheme();
+    const router = useRouter();
     
      const [user, setUser] = useState({email:"", password: ""})
+     const [error, setError] = useState("")
     
        const iniciarSesion = async () => {
+        try{
          const response = await authRepo.iniciarSesion(user.email, user.password);
          if (!response.id){
            Alert.alert("El usuario no existe")
          }
+         router.replace("/")
+
+        }catch(error: any){
+          setError(error.message);
+        }
        }
 
     return (
@@ -54,6 +63,11 @@ export const LoginScreen = ()=> {
                 </ThemedText>
             </ThemedView>
         </Pressable>
+        {error != "" && 
+          <Text style={{color:"red"}}>
+              {error}      
+          </Text>
+        } 
     </ThemedView>
     </View >)
 }

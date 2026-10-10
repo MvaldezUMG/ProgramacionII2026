@@ -11,9 +11,11 @@ import { Button, Pressable, StyleSheet, useColorScheme, View } from 'react-nativ
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 
+import { authRepo } from '@/app';
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 
 export default function AppTabs() {
+
   return (
     <Tabs>
       <TabSlot style={{ height: '100%' }} />
@@ -25,7 +27,7 @@ export default function AppTabs() {
           <TabTrigger name="home" href="/products" asChild>
             <TabButton>Products</TabButton>
           </TabTrigger>
-          <Button title="Cerrar"></Button>
+          <Button title="Cerrar" onPress={()=> authRepo.cerrarSesion()}></Button>
         </CustomTabList>
       </TabList>
     </Tabs>

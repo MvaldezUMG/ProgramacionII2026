@@ -1,36 +1,45 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, Stack, ThemeProvider, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import { Alert, Pressable, Text, useColorScheme } from 'react-native';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
-import { useEffect, useState } from 'react';
 import { authRepo } from '.';
-import { LoginScreen } from './login';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function TabLayout() {
+export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
-    const [loggeado, setLoggeado] = useState(false)
-  
-    useEffect(()=>{
-      //Se va cargar al inicio del programa
-      (async()=>{
-        const sesion = await authRepo.obtenerSesion();
-        if (sesion){
-          setLoggeado(true)
-        }
-      })()
-    },[])
-  
+  const cerrarSesion = async ()=>{
+    try {
+      await authRepo.cerrarSesion()
+      router.replace("/login")
+    }
+    catch(error){
+      Alert.alert(
+            'No se pudo cerrar sesión',
+            error instanceof Error ? error.message : 'Intenta de nuevo.',
+          );
+    }
+  }
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AnimatedSplashOverlay />
-      {!loggeado ? <LoginScreen/> : <AppTabs />}
-      
+   
+      <Stack screenOptions={{
+        headerRight: () => (
+          <Pressable onPress={()=> cerrarSesion()} accessibilityRole="button">
+            <Text>Cerrar sesión</Text>
+          </Pressable>
+        ),
+      }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="products" />
+        <Stack.Screen name="explore" />
+      </Stack>
     </ThemeProvider>
   );
 }

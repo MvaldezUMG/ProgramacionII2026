@@ -1,5 +1,5 @@
 import * as Device from 'expo-device';
-import { Modal, Platform, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { HintRow } from '@/components/hint-row';
@@ -10,7 +10,6 @@ import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
 import { useTheme } from '@/hooks/use-theme';
 import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import { SupabaseAuthRepository } from '../database/SupabaseRepository';
 import { supabase } from '../database/supabase';
 
@@ -44,6 +43,7 @@ export default function HomeScreen() {
 
   useEffect(()=>{
     //Se va cargar al inicio del programa
+    console.log("Inicio");
     (async()=>{
       const sesion = await authRepo.obtenerSesion();
       if (sesion){
